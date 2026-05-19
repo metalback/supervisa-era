@@ -32,12 +32,11 @@ import { docker } from "@ai-hero/sandcastle/sandboxes/docker";
 const MAX_ITERATIONS = 10;
 
 // Hooks run inside the sandbox before the agent starts each iteration.
-// Install both npm deps (app/) and pip deps (api/) for the monorepo.
+// npm deps installed here; Python deps pre-installed in Docker image.
 const hooks = {
   sandbox: {
     onSandboxReady: [
       { command: "cd app && npm install" },
-      { command: "cd api && pip install -r requirements.txt" },
     ],
   },
 };

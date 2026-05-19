@@ -25,14 +25,21 @@ ARG AGENT_GID=1000
 # Rename the base image's "node" user to "agent" and align UID/GID.
 RUN groupmod -g $AGENT_GID node && usermod -u $AGENT_UID -g $AGENT_GID -d /home/agent -m -l agent node
 
-# Create a virtual environment for Python (bypasses PEP 668 restrictions)
+# Create a virtual environment for Python (owned by agent user to avoid permission issues)
 RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --upgrade pip setuptools
+
+# Pre-install Python requirements (as root before switching user)
+COPY api/requirements.txt /tmp/requirements.txt
+RUN /opt/venv/bin/pip install -r /tmp/requirements.txt
 
 # Install OpenCode CLI
 RUN npm install -g opencode-ai@latest
 
 # Add venv to PATH for the agent user
 ENV PATH="/opt/venv/bin:${PATH}"
+
+# Ensure agent user owns the venv
+RUN chown -R ${AGENT_UID}:${AGENT_GID} /opt/venv
 
 USER ${AGENT_UID}:${AGENT_GID}
 
