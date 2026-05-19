@@ -54,4 +54,18 @@ describe('FormInput', () => {
     const input = getByTestId('input');
     expect(input.props.editable).toBe(false);
   });
+
+  it('renders error text when error prop is provided', () => {
+    const { getByText } = render(
+      <FormInput label="Label" value="" onChangeText={() => {}} error="This field is required" />
+    );
+    expect(getByText('This field is required')).toBeTruthy();
+  });
+
+  it('does not render error text when error prop is not provided', () => {
+    const { queryByText } = render(
+      <FormInput label="Label" value="" onChangeText={() => {}} />
+    );
+    expect(queryByText('This field is required')).toBeNull();
+  });
 });

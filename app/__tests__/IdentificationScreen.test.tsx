@@ -186,6 +186,33 @@ describe('IdentificationScreen', () => {
     const fechaInput = getByTestId('input-fecha');
     expect(fechaInput.props.editable).toBe(false);
   });
+
+  it('navigates to Resultados when continue is pressed', () => {
+    const { getByTestId } = render(
+      <IdentificationScreen navigation={mockNavigation as any} route={mockRoute as any} />
+    );
+    fireEvent.press(getByTestId('button-continue'));
+    expect(mockNavigation.navigate).toHaveBeenCalledWith('Resultados', { evaluationId: 'eval-1' });
+  });
+
+  it('shows validation error when establecimiento is empty and continue is pressed', () => {
+    const { useEvaluationStore } = require('../src/store/evaluation');
+    (useEvaluationStore as jest.Mock).mockReturnValue({
+      currentEvaluation: {
+        ...mockEvaluation,
+        establecimiento: null,
+      },
+      isLoading: false,
+      loadEvaluation: mockLoadEvaluation,
+      saveMetadata: mockSaveMetadata,
+    });
+    const { getByText, getByTestId } = render(
+      <IdentificationScreen navigation={mockNavigation as any} route={mockRoute as any} />
+    );
+    fireEvent.press(getByTestId('button-continue'));
+    expect(getByText('El nombre del establecimiento es obligatorio')).toBeTruthy();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
 });
 
 describe('IdentificationScreen with empty evaluation', () => {

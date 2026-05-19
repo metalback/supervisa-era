@@ -17,6 +17,7 @@ interface FormInputProps {
   keyboardType?: KeyboardTypeOptions;
   helperText?: string;
   suffix?: string;
+  error?: string;
   testID?: string;
 }
 
@@ -29,6 +30,7 @@ export function FormInput({
   keyboardType,
   helperText,
   suffix,
+  error,
   testID,
 }: FormInputProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -42,6 +44,7 @@ export function FormInput({
             styles.input,
             !editable && styles.inputDisabled,
             isFocused && styles.inputFocused,
+            error && styles.inputError,
             suffix && styles.inputWithSuffix,
           ]}
           value={value}
@@ -56,7 +59,8 @@ export function FormInput({
         />
         {suffix && <Text style={styles.suffix}>{suffix}</Text>}
       </View>
-      {helperText && <Text style={styles.helperText}>{helperText}</Text>}
+      {error && <Text style={styles.errorText}>{error}</Text>}
+      {!error && helperText && <Text style={styles.helperText}>{helperText}</Text>}
     </View>
   );
 }
@@ -103,6 +107,14 @@ const styles = StyleSheet.create({
   helperText: {
     ...typography['label-md'],
     color: colors.outline,
+    marginTop: 2,
+  },
+  inputError: {
+    borderColor: colors.error,
+  },
+  errorText: {
+    ...typography['label-md'],
+    color: colors.error,
     marginTop: 2,
   },
 });

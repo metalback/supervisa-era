@@ -43,6 +43,7 @@ export function IdentificationScreen({ route, navigation }: Props) {
   const [encargado, setEncargado] = useState('');
   const [email, setEmail] = useState('');
   const [initialized, setInitialized] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   useEffect(() => {
     loadEvaluation(evaluationId);
@@ -106,9 +107,12 @@ export function IdentificationScreen({ route, navigation }: Props) {
   const handleEstablecimiento = useCallback(
     (text: string) => {
       setEstablecimiento(text);
+      if (validationError && text.trim()) {
+        setValidationError(null);
+      }
       saveField({ establecimiento: text || null });
     },
-    [saveField]
+    [saveField, validationError]
   );
 
   const handlePoblacion = useCallback(
@@ -154,8 +158,12 @@ export function IdentificationScreen({ route, navigation }: Props) {
   );
 
   const handleContinue = useCallback(() => {
-    if (!establecimiento.trim()) return;
-    navigation.navigate('Identification', { evaluationId });
+    if (!establecimiento.trim()) {
+      setValidationError('El nombre del establecimiento es obligatorio');
+      return;
+    }
+    setValidationError(null);
+    navigation.navigate('Resultados', { evaluationId });
   }, [establecimiento, navigation, evaluationId]);
 
   const handleTabPress = useCallback(
@@ -168,8 +176,6 @@ export function IdentificationScreen({ route, navigation }: Props) {
   const regionOptions = REGIONES.map((r) => ({ label: r.name, value: r.code }));
   const comunas = region ? getComunasByRegion(region) : [];
   const comunaOptions = comunas.map((c) => ({ label: c, value: c }));
-
-  const isValid = establecimiento.trim().length > 0;
 
   return (
     <View style={styles.screen}>
@@ -247,6 +253,7 @@ export function IdentificationScreen({ route, navigation }: Props) {
             value={establecimiento}
             onChangeText={handleEstablecimiento}
             placeholder="Nombre oficial del CESFAM, CECOSF, etc."
+            error={validationError || undefined}
             testID="input-establecimiento"
           />
         </SectionCard>
@@ -310,10 +317,9 @@ export function IdentificationScreen({ route, navigation }: Props) {
 
         <View style={styles.actionArea}>
           <TouchableOpacity
-            style={[styles.continueButton, !isValid && styles.continueButtonDisabled]}
+            style={styles.continueButton}
             onPress={handleContinue}
             activeOpacity={0.8}
-            disabled={!isValid}
             testID="button-continue"
           >
             <Text style={styles.continueButtonText}>Continuar a Indicadores</Text>
@@ -403,9 +409,6 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: borderRadius.full,
     width: '100%',
-  },
-  continueButtonDisabled: {
-    opacity: 0.5,
   },
   continueButtonText: {
     ...typography['body-lg'],
