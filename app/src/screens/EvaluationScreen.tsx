@@ -21,6 +21,14 @@ interface EvaluationScreenProps {
   onNavigateToClosure: (evaluationId: string) => void;
 }
 
+function formatTimeAgo(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return 'Guardado automáticamente hace menos de 1 min.';
+  return `Guardado automáticamente hace ${diffMin} min.`;
+}
+
 export function EvaluationScreen({
   evaluationId,
   onNavigateToClosure,
@@ -77,13 +85,7 @@ export function EvaluationScreen({
     onNavigateToClosure(evaluationId);
   }, [evaluationId, onNavigateToClosure]);
 
-  const formatTimeAgo = useCallback((date: Date) => {
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMin = Math.floor(diffMs / 60000);
-    if (diffMin < 1) return 'Guardado automáticamente hace menos de 1 min.';
-    return `Guardado automáticamente hace ${diffMin} min.`;
-  }, []);
+
 
   const renderItem = useCallback(
     ({ item }: { item: EvaluacionItem }) => (
@@ -98,6 +100,27 @@ export function EvaluationScreen({
     ),
     [handleScoreChange, handleObservationChange]
   );
+
+  const renderTab = (tabKey: TabKey, label: string, count: number) => {
+    const isActive = activeTab === tabKey;
+    return (
+      <TouchableOpacity
+        style={[styles.tab, isActive && styles.activeTab]}
+        onPress={() => setActiveTab(tabKey)}
+        accessibilityRole="tab"
+        accessibilityState={{ selected: isActive }}
+      >
+        <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+          {label}
+        </Text>
+        <View style={[styles.badge, isActive ? styles.activeBadge : styles.inactiveBadge]}>
+          <Text style={[styles.badgeText, isActive && styles.activeBadgeText]}>
+            {count}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   const renderFooter = useCallback(
     () => (
@@ -123,66 +146,8 @@ export function EvaluationScreen({
       </View>
       <ProgressHeader completed={completedCount} total={TOTAL_ITEMS} />
       <View style={styles.tabBar}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'estructura' && styles.activeTab]}
-          onPress={() => setActiveTab('estructura')}
-          accessibilityRole="tab"
-          accessibilityState={{ selected: activeTab === 'estructura' }}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'estructura' && styles.activeTabText,
-            ]}
-          >
-            Estructura
-          </Text>
-          <View
-            style={[
-              styles.badge,
-              activeTab === 'estructura' ? styles.activeBadge : styles.inactiveBadge,
-            ]}
-          >
-            <Text
-              style={[
-                styles.badgeText,
-                activeTab === 'estructura' && styles.activeBadgeText,
-              ]}
-            >
-              {ESTRUCTURA_COUNT}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'procesos' && styles.activeTab]}
-          onPress={() => setActiveTab('procesos')}
-          accessibilityRole="tab"
-          accessibilityState={{ selected: activeTab === 'procesos' }}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'procesos' && styles.activeTabText,
-            ]}
-          >
-            Procesos
-          </Text>
-          <View
-            style={[
-              styles.badge,
-              activeTab === 'procesos' ? styles.activeBadge : styles.inactiveBadge,
-            ]}
-          >
-            <Text
-              style={[
-                styles.badgeText,
-                activeTab === 'procesos' && styles.activeBadgeText,
-              ]}
-            >
-              {PROCESOS_COUNT}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        {renderTab('estructura', 'Estructura', ESTRUCTURA_COUNT)}
+        {renderTab('procesos', 'Procesos', PROCESOS_COUNT)}
       </View>
       <FlatList
         data={activeItems}

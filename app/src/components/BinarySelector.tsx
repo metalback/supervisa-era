@@ -22,6 +22,7 @@ export function BinarySelector({ value, onChange }: BinarySelectorProps) {
         style={[
           styles.button,
           styles.leftButton,
+          value === 1 && styles.activeButtonShadow,
           value === 1 && styles.activeYesButton,
         ]}
         onPress={handleYes}
@@ -36,6 +37,7 @@ export function BinarySelector({ value, onChange }: BinarySelectorProps) {
         style={[
           styles.button,
           styles.rightButton,
+          value === 0 && styles.activeButtonShadow,
           value === 0 && styles.activeNoButton,
         ]}
         onPress={handleNo}
@@ -71,8 +73,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: borderRadius.default,
     borderBottomRightRadius: borderRadius.default,
   },
-  activeYesButton: {
-    backgroundColor: colors.primary,
+  activeButtonShadow: {
     borderRadius: borderRadius.default,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -80,14 +81,11 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
+  activeYesButton: {
+    backgroundColor: colors.primary,
+  },
   activeNoButton: {
     backgroundColor: colors.surfaceContainerLowest,
-    borderRadius: borderRadius.default,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
   },
   label: {
     ...typography['label-md'],
