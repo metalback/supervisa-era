@@ -2,8 +2,9 @@ import io
 from pathlib import Path
 
 import openpyxl
+from openpyxl.worksheet.worksheet import Worksheet
 
-from api.app.models import EvaluacionRequest
+from api.app.models import EvaluacionItem, EvaluacionRequest
 from api.services.cell_mapping import (
     COMPROMISOS_CELL,
     ESTRUCTURA_ROWS,
@@ -16,7 +17,7 @@ from api.services.cell_mapping import (
 TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "templates" / "plantilla_base.xlsx"
 
 
-def _safe_write(ws, cell_ref, value):
+def _safe_write(ws: Worksheet, cell_ref: str, value: object) -> None:
     cell = ws[cell_ref]
     if isinstance(cell, openpyxl.cell.cell.MergedCell):
         for mr in list(ws.merged_cells.ranges):
@@ -24,6 +25,15 @@ def _safe_write(ws, cell_ref, value):
                 ws.unmerge_cells(str(mr))
                 break
     ws[cell_ref] = value
+
+
+def _inject_items(ws: Worksheet, items: list[EvaluacionItem], row_map: dict[int, int]) -> None:
+    for item in items:
+        row = row_map.get(item.item)
+        if row:
+            _safe_write(ws, f"C{row}", item.puntaje)
+            if item.observacion:
+                _safe_write(ws, f"J{row}", item.observacion)
 
 
 def inject(payload: EvaluacionRequest) -> io.BytesIO:
@@ -40,19 +50,8 @@ def inject(payload: EvaluacionRequest) -> io.BytesIO:
         _safe_write(ws, cells["numerador"], tasa.numerador)
         _safe_write(ws, cells["denominador"], tasa.denominador)
 
-    for item in payload.evaluacion.estructura:
-        row = ESTRUCTURA_ROWS.get(item.item)
-        if row:
-            _safe_write(ws, f"C{row}", item.puntaje)
-            if item.observacion:
-                _safe_write(ws, f"J{row}", item.observacion)
-
-    for item in payload.evaluacion.procesos:
-        row = PROCESOS_ROWS.get(item.item)
-        if row:
-            _safe_write(ws, f"C{row}", item.puntaje)
-            if item.observacion:
-                _safe_write(ws, f"J{row}", item.observacion)
+    _inject_items(ws, payload.evaluacion.estructura, ESTRUCTURA_ROWS)
+    _inject_items(ws, payload.evaluacion.procesos, PROCESOS_ROWS)
 
     _safe_write(ws, COMPROMISOS_CELL, payload.cierre.compromisos)
 

@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.responses import Response
 
 from api.app.models import EvaluacionRequest
 from api.services.injector import inject
@@ -15,7 +16,6 @@ def health():
 def generate(payload: EvaluacionRequest):
     buf = inject(payload)
     filename = f"PAUTA_ERA_{payload.metadata.establecimiento}_{payload.metadata.fecha}.xlsx"
-    from fastapi.responses import Response
 
     return Response(
         content=buf.getvalue(),
