@@ -3,3 +3,7 @@ export type { EvaluationStatus } from './StatusChip';
 export { ProgressBar } from './ProgressBar';
 export { FAB } from './FAB';
 export { StatusCard } from './StatusCard';
+export { BinarySelector } from './BinarySelector';
+export { ObservationField } from './ObservationField';
+export { EvaluationItem } from './EvaluationItem';
+export { ProgressHeader } from './ProgressHeader';

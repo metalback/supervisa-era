@@ -4,7 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/auth';
 import { PinScreen } from '../screens/PinScreen';
 import { HomeScreen } from '../screens/HomeScreen';
+import { EvaluationScreen } from '../screens/EvaluationScreen';
 import { IdentificationScreen } from '../screens/PlaceholderScreens';
+import { ClosureScreen } from '../screens/PlaceholderScreens';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
@@ -50,6 +52,17 @@ export function AppNavigator() {
               )}
             </Stack.Screen>
             <Stack.Screen name="Identification" component={IdentificationScreen} />
+            <Stack.Screen name="Evaluation">
+              {({ navigation, route }) => (
+                <EvaluationScreen
+                  evaluationId={route.params.evaluationId}
+                  onNavigateToClosure={(evaluationId: string) =>
+                    navigation.navigate('Closure', { evaluationId })
+                  }
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Closure" component={ClosureScreen} />
           </>
         )}
       </Stack.Navigator>
