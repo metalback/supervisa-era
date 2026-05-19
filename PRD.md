@@ -130,12 +130,69 @@ Solo se testea comportamiento externo, no implementación interna. Un test pasa 
 - SMTP / envío automático de correo: el usuario comparte el archivo manualmente.
 - Roles de usuario multi-tenant: solo un referente técnico.
 - Dashboard o analytics web: la planilla Excel es el producto final.
-- Migraciones complejas de SQLite: schema version手动 (manual) con migraciones inline.
+- Migraciones complejas de SQLite: schema version (manual) con migraciones inline.
 - CI/CD pipelines: por ahora build local con EAS.
 - Traducción a otros idiomas.
 - Soporte para tablets o desktop: solo mobile portrait.
 - Notificaciones push.
 - Cálculo de tasas: la app solo captura numerador y denominador, la planilla Excel hace el cálculo con sus fórmulas.
+
+## Acceptance Criteria
+
+### Core Infrastructure
+- [ ] App opens with PIN security (User Story #1)
+- [ ] Theme matches institutional design: MINSAL blue, Inter typography (User Story #23)
+- [ ] SQLite database created on first launch with all tables
+- [ ] Backend healthcheck returns 200 OK
+
+### Home & Navigation
+- [ ] Home screen shows list of evaluations with status cards (User Story #2)
+- [ ] FAB creates new evaluation and navigates to Identification (User Story #3)
+- [ ] Evaluations have visible status: Borrador, En Progreso, Completa, Enviada (User Story #4)
+- [ ] Progress indicator shows item count (e.g. "14/33 ítems") (User Story #5)
+- [ ] Bottom navigation allows jumping between sections (User Story #22)
+
+### Data Capture
+- [ ] Identification form captures all establishment fields (User Story #6)
+- [ ] Date auto-fills with current system date (User Story #7)
+- [ ] Region and comuna use predefined dropdowns (User Story #8)
+- [ ] Resultados screen captures numerador/denominador for Asma, EPOC, Coberturas (User Story #9)
+- [ ] Evaluation screen has Estructura (1-12) and Procesos (13-33) tabs (User Story #10)
+- [ ] Binary selector (Sí/No) works for each indicator (User Story #11)
+- [ ] Expandible observation field available for each item (User Story #12)
+- [ ] Auto-save on every change to SQLite (User Story #13)
+- [ ] Progress bar shows completion during evaluation (User Story #14)
+
+### Closure & Excel Generation
+- [ ] Summary screen shows establishment, items reviewed, main observations (User Story #15)
+- [ ] Compromisos text field available for work plan (User Story #16)
+- [ ] Single button generates official Excel (User Story #17)
+- [ ] Excel generation works offline (queued for later send) (User Story #18)
+- [ ] App detects connectivity and retries automatically (User Story #19)
+- [ ] Excel downloads to device storage for sharing (User Story #20)
+- [ ] Data persists across screen changes and app restarts (User Story #21)
+
+### Backend
+- [ ] POST /generate accepts JSON and returns correct Content-Type
+- [ ] Excel has correct values in all mapped cells
+- [ ] Formulas preserved after injection (I23, I24, I25, C81, C82, D81, D82, F81, F82, I81, I82)
+- [ ] Invalid JSON returns 422 validation error
+- [ ] Docker build succeeds and container starts
+
+## Implementation Progress
+
+| Issue | Title | Status |
+|-------|-------|--------|
+| #2 | Backend: Skeleton + Excel Injection Service | Done |
+| #3 | App Scaffold + Auth PIN | Done |
+| #4 | Home Screen + Database Layer + Evaluation Store | Pending |
+| #5 | Identification Screen | Pending |
+| #6 | Resultados Screen | Pending |
+| #7 | Evaluation Screen (Estructura + Procesos) | Pending |
+| #8 | Closure Screen + Excel Generation + Offline Sync | Pending |
+| #9 | End-to-End Flow + Bottom Navigation + Evaluation States | Pending |
+| #10 | Backend Tests: Excel Injection + API Routes | Pending |
+| #11 | Frontend Tests: Components + Store + Screens | Pending |
 
 ## Further Notes
 
