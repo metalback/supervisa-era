@@ -17,6 +17,7 @@ const mockEvaluation: Evaluation = {
   horas_administrativas: null,
   email_contacto: null,
   compromisos: null,
+  email_destinatario: null,
 };
 
 const mockItems: EvaluacionItem[] = [

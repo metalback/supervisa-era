@@ -14,7 +14,8 @@ export const CREATE_TABLES_SQL = [
     poblacion_rem_p3 INTEGER,
     horas_administrativas INTEGER,
     email_contacto TEXT,
-    compromisos TEXT
+    compromisos TEXT,
+    email_destinatario TEXT
   );`,
   `CREATE TABLE IF NOT EXISTS tasas_resultado (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

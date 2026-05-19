@@ -7,7 +7,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { IdentificationScreen } from '../screens/IdentificationScreen';
 import { ResultadosScreen } from '../screens/ResultadosScreen';
 import { EvaluationScreen } from '../screens/EvaluationScreen';
-import { ClosureScreen } from '../screens/PlaceholderScreens';
+import { ClosureScreen } from '../screens/ClosureScreen';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';

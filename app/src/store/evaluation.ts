@@ -36,6 +36,7 @@ interface EvaluationState {
   saveItemScore: (itemNumero: number, puntaje: 0 | 1 | null) => Promise<void>;
   saveItemObservation: (itemNumero: number, observacion: string | null) => Promise<void>;
   saveCompromisos: (compromisos: string) => Promise<void>;
+  saveEmailDestinatario: (email: string) => Promise<void>;
   setStatus: (status: Evaluation['status']) => Promise<void>;
   deleteEvaluation: (id: string) => Promise<void>;
 }
@@ -131,6 +132,14 @@ export const useEvaluationStore = create<EvaluationState>()(
           const { currentEvaluation } = get();
           if (!currentEvaluation) return;
           await dbUpdateEvaluation(currentEvaluation.id, { compromisos });
+          const updated = await dbGetEvaluation(currentEvaluation.id);
+          set({ currentEvaluation: updated });
+        },
+
+        saveEmailDestinatario: async (email) => {
+          const { currentEvaluation } = get();
+          if (!currentEvaluation) return;
+          await dbUpdateEvaluation(currentEvaluation.id, { email_destinatario: email });
           const updated = await dbGetEvaluation(currentEvaluation.id);
           set({ currentEvaluation: updated });
         },
