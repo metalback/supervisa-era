@@ -30,6 +30,7 @@ export const colors = {
   outline: '#727782',
   outlineVariant: '#c2c6d2',
   surfaceTint: '#2160a2',
+  inversePrimary: '#a4c9ff',
   background: '#f8f9ff',
   onBackground: '#191c20',
   surfaceVariant: '#e1e2e8',

@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         isLoading: false,
       });
     } catch {
-      set({ isLoading: false });
+      set({ isFirstLaunch: true, isAuthenticated: false, isLoading: false });
     }
   },
 

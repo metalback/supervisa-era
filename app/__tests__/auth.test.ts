@@ -39,6 +39,18 @@ describe('Auth Store', () => {
       expect(state.isAuthenticated).toBe(false);
       expect(state.isLoading).toBe(false);
     });
+
+    it('should reset to initial state when SecureStore fails', async () => {
+      useAuthStore.setState({ isFirstLaunch: false, isAuthenticated: true, isLoading: true });
+      (SecureStore.getItemAsync as jest.Mock).mockRejectedValue(new Error('store unavailable'));
+
+      await useAuthStore.getState().checkAuthState();
+
+      const state = useAuthStore.getState();
+      expect(state.isFirstLaunch).toBe(true);
+      expect(state.isAuthenticated).toBe(false);
+      expect(state.isLoading).toBe(false);
+    });
   });
 
   describe('setPin', () => {

@@ -21,6 +21,10 @@ describe('Theme tokens', () => {
     it('should have secondary color', () => {
       expect(colors.secondary).toBe('#48626e');
     });
+
+    it('should have inverse-primary color', () => {
+      expect(colors.inversePrimary).toBe('#a4c9ff');
+    });
   });
 
   describe('typography', () => {
