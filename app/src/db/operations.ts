@@ -20,6 +20,7 @@ export interface Evaluation {
   horas_administrativas: number | null;
   email_contacto: string | null;
   compromisos: string | null;
+  email_destinatario: string | null;
 }
 
 export interface TasaResultado {

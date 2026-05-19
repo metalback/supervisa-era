@@ -38,6 +38,32 @@ jest.mock('../src/db', () => ({
   getCompletedItemsCounts: jest.fn().mockResolvedValue({}),
 }));
 
+jest.mock('../src/services/sync', () => ({
+  checkConnectivity: jest.fn().mockResolvedValue(true),
+  queueForSync: jest.fn().mockResolvedValue(undefined),
+  onConnectivityChange: jest.fn(),
+  startConnectivityListener: jest.fn(),
+  stopConnectivityListener: jest.fn(),
+  drainSyncQueue: jest.fn().mockResolvedValue(undefined),
+}));
+
+jest.mock('../src/services/api', () => ({
+  generateExcel: jest.fn().mockResolvedValue(new Blob()),
+  buildPayload: jest.fn().mockReturnValue({}),
+  setApiBaseUrl: jest.fn(),
+  getApiBaseUrl: jest.fn().mockReturnValue('http://localhost:8000'),
+}));
+
+jest.mock('expo-file-system/legacy', () => ({
+  cacheDirectory: 'file://cache/',
+  writeAsStringAsync: jest.fn().mockResolvedValue(undefined),
+  EncodingType: { Base64: 'base64' },
+}));
+
+jest.mock('expo-sharing', () => ({
+  shareAsync: jest.fn().mockResolvedValue(undefined),
+}));
+
 import { AppNavigator } from '../src/navigation/AppNavigator';
 import * as db from '../src/db';
 
