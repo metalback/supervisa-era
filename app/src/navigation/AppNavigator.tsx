@@ -5,6 +5,8 @@ import { useAuthStore } from '../store/auth';
 import { PinScreen } from '../screens/PinScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { IdentificationScreen } from '../screens/IdentificationScreen';
+import { ResultadosScreen } from '../screens/ResultadosScreen';
+import { EvaluationScreen } from '../screens/PlaceholderScreens';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
@@ -50,6 +52,17 @@ export function AppNavigator() {
               )}
             </Stack.Screen>
             <Stack.Screen name="Identification" component={IdentificationScreen} />
+            <Stack.Screen name="Resultados">
+              {({ route, navigation }) => (
+                <ResultadosScreen
+                  evaluationId={route.params.evaluationId}
+                  onNavigateToEvaluation={(evaluationId: string) =>
+                    navigation.navigate('Evaluation', { evaluationId })
+                  }
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Evaluation" component={EvaluationScreen} />
           </>
         )}
       </Stack.Navigator>

@@ -2,4 +2,6 @@ export type RootStackParamList = {
   Pin: { mode: 'create' | 'verify' };
   Home: undefined;
   Identification: { evaluationId: string };
+  Resultados: { evaluationId: string };
+  Evaluation: { evaluationId: string };
 };
