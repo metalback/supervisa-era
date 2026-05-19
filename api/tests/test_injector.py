@@ -105,7 +105,29 @@ def test_inject_compromisos(sample_payload):
     assert ws["A97"].value == "Implementar protocolo de rescate de inasistentes"
 
 
-def test_inject_observaciones(sample_payload):
+def test_inject_estructura_observations(sample_payload):
     ws = _load_result(sample_payload)
     assert ws["J34"].value == "Box disponible"
     assert ws["J40"].value == "Sin espirómetro"
+    assert ws["J47"].value == "Sin sistema de citas"
+
+
+def test_inject_procesos_observations(sample_payload):
+    ws = _load_result(sample_payload)
+    sample_procesos = sample_payload["evaluacion"]["procesos"]
+    for item in sample_procesos:
+        row = {13:52,14:53,15:54,16:55,17:56,18:57,19:58,20:59,21:61,22:62,23:63,24:64,25:65,26:66,27:68,28:69,29:70,30:71,31:73,32:74,33:76}[item["item"]]
+        if item["observacion"]:
+            assert ws[f"J{row}"].value == item["observacion"]
+
+
+def test_preserves_summary_formulas(sample_payload):
+    ws = _load_result(sample_payload)
+    assert ws["C81"].value == "=COUNT(C34,C36,C38:C47)"
+    assert ws["C82"].value == "=COUNT(C76,C74,C73,C71,C70,C69,C68,C66,C65,C64,C63,C62,C61,C59,C58,C57,C56,C55,C54,C53,C52)"
+    assert ws["D81"].value == "=SUM(C34:C47)"
+    assert ws["D82"].value == "=SUM(C52:C76)"
+    assert ws["F81"].value == "=D81/C81"
+    assert ws["F82"].value == "=D82/C82"
+    assert ws["I81"].value == '=IF(F81<0.6,"POR LOGRAR",IF(AND(F81<0.9,F81>=0.6),"PARCIALMENTE LOGRADO","LOGRADO"))'
+    assert ws["I82"].value == '=IF(F82<0.6,"POR LOGRAR",IF(AND(F82<0.9,F82>=0.6),"PARCIALMENTE LOGRADO","LOGRADO"))'
