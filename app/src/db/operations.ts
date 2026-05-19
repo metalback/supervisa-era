@@ -1,9 +1,13 @@
 import { getDatabase, seedEvaluationItems } from './database';
 
+type EvaluationStatus = 'draft' | 'in_progress' | 'complete' | 'sent';
+type TasaTipo = 'asma' | 'epoc' | 'cobertura_vnc';
+type CategoriaItem = 'estructura' | 'procesos';
+
 export interface Evaluation {
   id: string;
   establecimiento: string | null;
-  status: 'draft' | 'in_progress' | 'complete' | 'sent';
+  status: EvaluationStatus;
   created_at: string;
   updated_at: string;
   fecha: string | null;
@@ -21,7 +25,7 @@ export interface Evaluation {
 export interface TasaResultado {
   id: number;
   evaluation_id: string;
-  tipo: 'asma' | 'epoc' | 'cobertura_vnc';
+  tipo: TasaTipo;
   numerador: number | null;
   denominador: number | null;
 }
@@ -30,7 +34,7 @@ export interface EvaluacionItem {
   id: number;
   evaluation_id: string;
   item_numero: number;
-  categoria: 'estructura' | 'procesos';
+  categoria: CategoriaItem;
   puntaje: number | null;
   observacion: string | null;
 }
@@ -115,7 +119,7 @@ export async function getTasas(evaluationId: string): Promise<TasaResultado[]> {
 
 export async function upsertTasa(
   evaluationId: string,
-  tipo: 'asma' | 'epoc' | 'cobertura_vnc',
+  tipo: TasaTipo,
   numerador: number | null,
   denominador: number | null
 ): Promise<void> {

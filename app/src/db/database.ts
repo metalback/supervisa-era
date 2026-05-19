@@ -18,9 +18,9 @@ async function initDatabase(database: SQLite.SQLiteDatabase): Promise<void> {
   }
 }
 
-export function seedEvaluationItems(
+export async function seedEvaluationItems(
   db: SQLite.SQLiteDatabase,
   evaluationId: string
 ): Promise<void> {
-  return db.runAsync(SEED_ITEMS_SQL, [evaluationId]).then(() => {});
+  await db.runAsync(SEED_ITEMS_SQL, [evaluationId]);
 }
