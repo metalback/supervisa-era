@@ -3,3 +3,8 @@ export type { EvaluationStatus } from './StatusChip';
 export { ProgressBar } from './ProgressBar';
 export { FAB } from './FAB';
 export { StatusCard } from './StatusCard';
+export { FormInput } from './FormInput';
+export { FormSelect } from './FormSelect';
+export { SectionCard } from './SectionCard';
+export { BottomNav } from './BottomNav';
+export type { NavTab } from './BottomNav';

@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/auth';
 import { PinScreen } from '../screens/PinScreen';
 import { HomeScreen } from '../screens/HomeScreen';
-import { IdentificationScreen } from '../screens/PlaceholderScreens';
+import { IdentificationScreen } from '../screens/IdentificationScreen';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
