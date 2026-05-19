@@ -2,49 +2,38 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, typography, spacing } from '../theme';
 
-export function HomeScreen() {
+interface PlaceholderScreenProps {
+  title: string;
+  subtitle: string;
+}
+
+function PlaceholderScreen({ title, subtitle }: PlaceholderScreenProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <Text style={styles.subtitle}>Lista de evaluaciones</Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
   );
+}
+
+export function HomeScreen() {
+  return <PlaceholderScreen title="Home" subtitle="Lista de evaluaciones" />;
 }
 
 export function IdentificationScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Identificación</Text>
-      <Text style={styles.subtitle}>Datos del establecimiento</Text>
-    </View>
-  );
+  return <PlaceholderScreen title="Identificación" subtitle="Datos del establecimiento" />;
 }
 
 export function ResultadosScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Resultados</Text>
-      <Text style={styles.subtitle}>Tasas de resultado</Text>
-    </View>
-  );
+  return <PlaceholderScreen title="Resultados" subtitle="Tasas de resultado" />;
 }
 
 export function EvaluationScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Evaluación</Text>
-      <Text style={styles.subtitle}>Estructura y Procesos</Text>
-    </View>
-  );
+  return <PlaceholderScreen title="Evaluación" subtitle="Estructura y Procesos" />;
 }
 
 export function ClosureScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Cierre</Text>
-      <Text style={styles.subtitle}>Resumen y envío</Text>
-    </View>
-  );
+  return <PlaceholderScreen title="Cierre" subtitle="Resumen y envío" />;
 }
 
 const styles = StyleSheet.create({

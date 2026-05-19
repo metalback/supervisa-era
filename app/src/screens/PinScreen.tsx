@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useAuthStore } from '../store/auth';
 import { colors, typography, spacing, borderRadius } from '../theme';
@@ -15,13 +15,7 @@ export function PinScreen({ mode, onSuccess }: PinScreenProps) {
   const [error, setError] = useState<string | null>(null);
   const { setPin: savePin, verifyPin } = useAuthStore();
 
-  useEffect(() => {
-    if (pin.length === 4) {
-      handlePinComplete();
-    }
-  }, [pin]);
-
-  const handlePinComplete = async () => {
+  const handlePinComplete = useCallback(async () => {
     if (mode === 'create') {
       await savePin(pin);
       onSuccess();
@@ -37,7 +31,13 @@ export function PinScreen({ mode, onSuccess }: PinScreenProps) {
         }, 1000);
       }
     }
-  };
+  }, [mode, pin, savePin, verifyPin, onSuccess]);
+
+  useEffect(() => {
+    if (pin.length === 4) {
+      handlePinComplete();
+    }
+  }, [pin, handlePinComplete]);
 
   const handleDigitPress = (digit: string) => {
     if (pin.length < 4) {

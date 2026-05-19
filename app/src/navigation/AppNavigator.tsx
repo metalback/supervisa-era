@@ -3,13 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/auth';
 import { PinScreen } from '../screens/PinScreen';
-import {
-  HomeScreen,
-  IdentificationScreen,
-  ResultadosScreen,
-  EvaluationScreen,
-  ClosureScreen,
-} from '../screens/PlaceholderScreens';
+import { HomeScreen } from '../screens/PlaceholderScreens';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
@@ -21,7 +15,7 @@ export function AppNavigator() {
 
   useEffect(() => {
     checkAuthState();
-  }, []);
+  }, [checkAuthState]);
 
   if (isLoading) {
     return (
