@@ -35,8 +35,8 @@ RUN /opt/venv/bin/pip install -r /tmp/requirements.txt
 # Install OpenCode CLI
 RUN npm install -g opencode-ai@latest
 
-# Add venv to PATH for the agent user
-ENV PATH="/opt/venv/bin:${PATH}"
+# Add venv to PATH for the agent user and force English git messages
+ENV PATH="/opt/venv/bin:${PATH}" LC_ALL=C
 
 # Ensure agent user owns the venv
 RUN chown -R ${AGENT_UID}:${AGENT_GID} /opt/venv
