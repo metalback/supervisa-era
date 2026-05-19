@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/auth';
 import { PinScreen } from '../screens/PinScreen';
-import { HomeScreen } from '../screens/PlaceholderScreens';
+import { HomeScreen } from '../screens/HomeScreen';
+import { IdentificationScreen } from '../screens/PlaceholderScreens';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
@@ -38,7 +39,18 @@ export function AppNavigator() {
             )}
           </Stack.Screen>
         ) : (
-          <Stack.Screen name="Main" component={HomeScreen} />
+          <>
+            <Stack.Screen name="Home">
+              {({ navigation }) => (
+                <HomeScreen
+                  onNavigateToIdentification={(evaluationId: string) =>
+                    navigation.navigate('Identification', { evaluationId })
+                  }
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Identification" component={IdentificationScreen} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
