@@ -8,3 +8,7 @@ export { FormSelect } from './FormSelect';
 export { SectionCard } from './SectionCard';
 export { BottomNav } from './BottomNav';
 export type { NavTab } from './BottomNav';
+export { BinarySelector } from './BinarySelector';
+export { ObservationField } from './ObservationField';
+export { EvaluationItem } from './EvaluationItem';
+export { ProgressHeader } from './ProgressHeader';

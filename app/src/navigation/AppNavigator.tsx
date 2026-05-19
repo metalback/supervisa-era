@@ -6,7 +6,8 @@ import { PinScreen } from '../screens/PinScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { IdentificationScreen } from '../screens/IdentificationScreen';
 import { ResultadosScreen } from '../screens/ResultadosScreen';
-import { EvaluationScreen } from '../screens/PlaceholderScreens';
+import { EvaluationScreen } from '../screens/EvaluationScreen';
+import { ClosureScreen } from '../screens/PlaceholderScreens';
 import { RootStackParamList } from './types';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '../theme';
@@ -62,7 +63,17 @@ export function AppNavigator() {
                 />
               )}
             </Stack.Screen>
-            <Stack.Screen name="Evaluation" component={EvaluationScreen} />
+            <Stack.Screen name="Evaluation">
+              {({ navigation, route }) => (
+                <EvaluationScreen
+                  evaluationId={route.params.evaluationId}
+                  onNavigateToClosure={(evaluationId: string) =>
+                    navigation.navigate('Closure', { evaluationId })
+                  }
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Closure" component={ClosureScreen} />
           </>
         )}
       </Stack.Navigator>

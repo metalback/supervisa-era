@@ -4,4 +4,5 @@ export type RootStackParamList = {
   Identification: { evaluationId: string };
   Resultados: { evaluationId: string };
   Evaluation: { evaluationId: string };
+  Closure: { evaluationId: string };
 };
