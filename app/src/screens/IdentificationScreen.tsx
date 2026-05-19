@@ -23,6 +23,12 @@ function todayISO(): string {
   return new Date().toISOString().split('T')[0];
 }
 
+function parseOptionalInt(text: string): number | null {
+  if (!text) return null;
+  const num = parseInt(text, 10);
+  return isNaN(num) ? null : num;
+}
+
 export function IdentificationScreen({ route, navigation }: Props) {
   const { evaluationId } = route.params;
   const {
@@ -118,8 +124,7 @@ export function IdentificationScreen({ route, navigation }: Props) {
   const handlePoblacion = useCallback(
     (text: string) => {
       setPoblacion(text);
-      const num = text ? parseInt(text, 10) : null;
-      saveField({ poblacion_rem_p3: isNaN(num as number) ? null : num });
+      saveField({ poblacion_rem_p3: parseOptionalInt(text) });
     },
     [saveField]
   );
@@ -127,8 +132,7 @@ export function IdentificationScreen({ route, navigation }: Props) {
   const handleHoras = useCallback(
     (text: string) => {
       setHoras(text);
-      const num = text ? parseInt(text, 10) : null;
-      saveField({ horas_administrativas: isNaN(num as number) ? null : num });
+      saveField({ horas_administrativas: parseOptionalInt(text) });
     },
     [saveField]
   );
