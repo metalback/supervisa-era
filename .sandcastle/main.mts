@@ -32,18 +32,16 @@ import { docker } from "@ai-hero/sandcastle/sandboxes/docker";
 const MAX_ITERATIONS = 10;
 
 // Hooks run inside the sandbox before the agent starts each iteration.
-// npm deps installed here; Python deps pre-installed in Docker image.
+// App/API deps are installed by the implementer when scaffolding.
 const hooks = {
   sandbox: {
-    onSandboxReady: [
-      { command: "cd app && npm install" },
-    ],
+    onSandboxReady: [],
   },
 };
 
 // Copy node_modules from the host into the worktree before each sandbox
-// starts. Avoids a full npm install from scratch.
-const copyToWorktree = ["app/node_modules"];
+// starts. Root node_modules has sandcastle deps needed by implementers.
+const copyToWorktree = ["node_modules"];
 
 // ---------------------------------------------------------------------------
 // Main loop
