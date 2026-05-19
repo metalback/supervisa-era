@@ -12,11 +12,12 @@ import { colors, typography, spacing, borderRadius } from '../theme';
 import { useEvaluationStore } from '../store/evaluation';
 
 type TasaTipo = 'asma' | 'epoc' | 'cobertura_vnc';
+type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface TasaBlock {
   tipo: TasaTipo;
   title: string;
-  icon: string;
+  icon: IconName;
 }
 
 const TASA_BLOCKS: TasaBlock[] = [
@@ -28,6 +29,12 @@ const TASA_BLOCKS: TasaBlock[] = [
 interface ResultadosScreenProps {
   evaluationId: string;
   onNavigateToEvaluation: (evaluationId: string) => void;
+}
+
+function parseNumericValue(value: string): number | null {
+  if (value === '') return null;
+  const parsed = parseInt(value, 10);
+  return isNaN(parsed) ? null : parsed;
 }
 
 export function ResultadosScreen({
@@ -69,29 +76,18 @@ export function ResultadosScreen({
 
   const handleChange = useCallback(
     (tipo: TasaTipo, field: 'numerador' | 'denominador', text: string) => {
+      if (text !== '' && isNaN(parseInt(text, 10))) return;
+
       setValues((prev) => {
         const updated = {
           ...prev,
           [tipo]: { ...prev[tipo], [field]: text },
         };
 
-        const num = text === '' ? null : parseInt(text, 10);
-        if (text !== '' && isNaN(num as number)) return prev;
-
-        const numerador =
-          field === 'numerador'
-            ? num
-            : updated[tipo].numerador === ''
-            ? null
-            : parseInt(updated[tipo].numerador, 10);
-        const denominador =
-          field === 'denominador'
-            ? num
-            : updated[tipo].denominador === ''
-            ? null
-            : parseInt(updated[tipo].denominador, 10);
-
+        const numerador = parseNumericValue(updated[tipo].numerador);
+        const denominador = parseNumericValue(updated[tipo].denominador);
         saveTasas(tipo, numerador, denominador);
+
         return updated;
       });
     },
@@ -108,7 +104,7 @@ export function ResultadosScreen({
         <TouchableOpacity style={styles.menuButton}>
           <MaterialCommunityIcons name="menu" size={24} color={colors.onSurface} />
         </TouchableOpacity>
-        <Text style={styles.topBarTitle}>Supervisión de Salud</Text>
+        <Text style={styles.topBarTitle}>Supervision de Salud</Text>
         <TouchableOpacity style={styles.syncButton}>
           <MaterialCommunityIcons name="cloud-check-outline" size={24} color={colors.onSurfaceVariant} />
         </TouchableOpacity>
@@ -132,7 +128,7 @@ export function ResultadosScreen({
           <View key={block.tipo} style={styles.tasaCard}>
             <View style={styles.tasaHeader}>
               <MaterialCommunityIcons
-                name={block.icon as any}
+                name={block.icon}
                 size={20}
                 color={colors.secondary}
               />
