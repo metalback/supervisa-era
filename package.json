@@ -1,0 +1,14 @@
+{
+  "name": "supervisa-era",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "sandcastle": "npx tsx .sandcastle/main.mts",
+    "sandcastle:build": "docker build -t sandcastle-supervisa-era -f .sandcastle/Dockerfile ."
+  },
+  "devDependencies": {
+    "@ai-hero/sandcastle": "^0.1.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
