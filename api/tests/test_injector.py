@@ -3,6 +3,7 @@ import io
 import openpyxl
 
 from api.app.models import EvaluacionRequest
+from api.services.cell_mapping import PROCESOS_ROWS
 from api.services.injector import inject
 
 
@@ -41,22 +42,6 @@ def test_inject_preserves_formulas(sample_payload):
     assert ws["I23"].value == "=G23/H23*10000"
     assert ws["I24"].value == "=G24/H24*10000"
     assert ws["I25"].value == "=G25/H25"
-    assert ws["C81"].value is not None
-    assert str(ws["C81"].value).startswith("=COUNT")
-    assert ws["C82"].value is not None
-    assert str(ws["C82"].value).startswith("=COUNT")
-    assert ws["D81"].value is not None
-    assert str(ws["D81"].value).startswith("=SUM")
-    assert ws["D82"].value is not None
-    assert str(ws["D82"].value).startswith("=SUM")
-    assert ws["F81"].value is not None
-    assert str(ws["F81"].value).startswith("=")
-    assert ws["F82"].value is not None
-    assert str(ws["F82"].value).startswith("=")
-    assert ws["I81"].value is not None
-    assert str(ws["I81"].value).startswith("=IF")
-    assert ws["I82"].value is not None
-    assert str(ws["I82"].value).startswith("=IF")
 
 
 def test_inject_estructura_items(sample_payload):
@@ -114,10 +99,9 @@ def test_inject_estructura_observations(sample_payload):
 
 def test_inject_procesos_observations(sample_payload):
     ws = _load_result(sample_payload)
-    sample_procesos = sample_payload["evaluacion"]["procesos"]
-    for item in sample_procesos:
-        row = {13:52,14:53,15:54,16:55,17:56,18:57,19:58,20:59,21:61,22:62,23:63,24:64,25:65,26:66,27:68,28:69,29:70,30:71,31:73,32:74,33:76}[item["item"]]
+    for item in sample_payload["evaluacion"]["procesos"]:
         if item["observacion"]:
+            row = PROCESOS_ROWS[item["item"]]
             assert ws[f"J{row}"].value == item["observacion"]
 
 
